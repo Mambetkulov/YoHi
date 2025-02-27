@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Make a friend</title>
+  <link rel="stylesheet" href="/static/styles.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, white 0%, white 100%);
+      color: #fff;
+      min-height: 100vh;
+      font-family: 'Arial ', sans-serif;
+      margin: 0;
+      padding: 2rem;
+    }
+
+    h1 {
+      text-align: center;
+      color: black;
+      font-size: 2.5rem;
+      text-shadow: 0 0 10px rgba(255,255,255,0.3);
+      margin-bottom: 2rem;
+    }
+
+    .swipe-container {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      padding: 2rem 0;
+      scroll-behavior: smooth;
+      perspective: 1000px;
+      scroll-padding: 0 50%;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    .swipe-container::-webkit-scrollbar {
+      display: none;
+    }
+
+    .user-card {
+      flex: 0 0 400px;
+      height: 500px;
+      margin: 0 1rem;
+      border-radius: 20px;
+      scroll-snap-align: center;
+      background: linear-gradient(145deg, white 0%, whitesmoke 100%);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+      transform-style: preserve-3d;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0.7;
+      transform: scale(0.9);
+    }
+
+    .user-card.active {
+      opacity: 1;
+      transform: scale(1) translateZ(50px);
+      color: black;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.7);
+    }
+
+    .user-card:hover {
+      transform: scale(1.05) translateZ(50px);
+    }
+
+    .user-card p {
+      font-size: 1.2rem;
+      margin: 1rem 0;
+      color: black;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    }
+    .back-button {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      padding: 10px 20px;
+      background-color: rgba(0, 168, 255, 0.6);
+      border: none;
+      border-radius: 5px;
+      color: white;
+      font-size: 1.2rem;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .back-button:hover {
+      background-color: rgba(0, 168, 255, 0.8);
+      transform: scale(1.1);
+    }
+
+    .user-avatar {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 0 15px rgba(0, 168, 255, 0.5);
+      transition: transform 0.3s ease;
+    }
+
+    .user-card:hover .user-avatar {
+      transform: scale(1.1);
+    }
+
+    .user-card strong {
+      color: #00a8ff;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .nav-button {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 50px;
+      height: 50px;
+      background: rgba(255,255,255,0.0);
+      border: none;
+      border-radius: 50%;
+      color: black;
+      font-size: 1.5rem;
+      cursor: pointer;
+      backdrop-filter: blur(5px);
+      transition: all 0.3s ease;
+    }
+
+    .nav-button:hover {
+      background: rgba(255,255,255,0.7);
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .prev {
+      left: 2rem;
+    }
+
+    .next {
+      right: 2rem;
+    }
+
+    @keyframes glow {
+      0% { box-shadow: 0 0 20px rgba(0,168,255,0.3); }
+      50% { box-shadow: 0 0 40px rgba(0,168,255,0.6); }
+      100% { box-shadow: 0 0 20px rgba(0,168,255,0.3); }
+    }
+
+    .active {
+      animation: glow 3s infinite;
+    }
+  </style>
+</head>
+<body>
+<h1> Make a Friend</h1>
+<button class="back-button" onclick="window.history.back()">Back</button>
+<button class="nav-button prev">◀</button>
+<button class="nav-button next">▶</button>
+
+<div class="swipe-container" id="container">
+  <div th:each="user : ${users}" class="user-card"
+       th:onclick="|window.location.href='/followers/UserProfile/' + ${user.id} + '/' + ${id}|">
+    <img th:src="${user.getUserInfo().image}" alt="User Avatar" class="user-avatar">
+    <p><strong>Name</strong><span th:text="${user.username}"></span></p>
+    <p><strong>Email</strong><span th:text="${user.email}"></span></p>
+
+  </div>
+</div>
+
+<script>
+  const container = document.getElementById('container');
+  const cards = document.querySelectorAll('.user-card');
+  const prevButton = document.querySelector('.prev');
+  const nextButton = document.querySelector('.next');
+
+  // Активация центральной карточки
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      entry.target.classList.toggle('active', entry.isIntersecting);
+    });
+  }, {
+    threshold: 0.5,
+    root: container
+  });
+
+  cards.forEach(card => observer.observe(card));
+
+  // Навигация
+  let currentScroll = 0;
+  const cardWidth = 400 + 32; // width + margin
+
+  nextButton.addEventListener('click', () => {
+    container.scrollBy({
+      left: cardWidth,
+      behavior: 'smooth'
+    });
+  });
+
+  prevButton.addEventListener('click', () => {
+    container.scrollBy({
+      left: -cardWidth,
+      behavior: 'smooth'
+    });
+  });
+
+  // Параллакс эффект
+  container.addEventListener('scroll', () => {
+    cards.forEach(card => {
+      const rect = card.getBoundingClientRect();
+      const centerPosition = (rect.left + rect.right) / 2;
+      const containerCenter = window.innerWidth / 2;
+      const distance = centerPosition - containerCenter;
+
+      card.style.transform = `scale(${1 - Math.abs(distance)/1000})
+                                     translateX(${distance/10}px)
+                                     translateZ(${50 - Math.abs(distance)/10}px)`;
+    });
+  });
+</script>
+</body>
+</html>

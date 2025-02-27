@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymelaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign In</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            height: 200px;
+            background: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .signin-container {
+            max-width: 400px;
+            width: 100%;
+            padding: 2rem;
+            border-radius: 30px;
+            background: #ffffff;
+            box-shadow: 0 10px 70px rgba(0, 87, 255, 0.3);  /* Increased glow effect */
+            position: relative;
+            overflow: hidden;
+            border: 2px solid #808080;  /* Grey border */
+        }
+
+        .signin-container::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg,
+            #00f2ff,
+            #0055ff,
+            #00f2ff);
+            z-index: -1;
+            border-radius: 30px;
+            animation: glow 3s linear infinite;
+            opacity: 0.4;  /* Increased glow opacity */
+        }
+
+        .signin-container h2 {
+            margin-bottom: 1.5rem;
+            text-align: center;
+            color: grey;
+            font-weight: 600;
+            letter-spacing: 1px;
+            font-size: 24px;
+            position: relative;
+        }
+
+        .signin-container h2 img {
+            width: 50px;  /* Increased size of gif */
+            height: auto;
+            vertical-align: middle;
+            margin-left: 10px;
+        }
+
+        .form-control {
+            border-radius: 8px;
+            padding: 1rem;
+            border: 2px solid #e0e0e0;
+            transition: all 0.3s ease;
+            background: #ffffff;
+        }
+
+        .form-control:focus {
+            border-color: #0055ff;
+            box-shadow: 0 0 15px rgba(0, 87, 255, 0.2);
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #0055ff;
+        }
+
+        .btn-glow {
+            background: linear-gradient(135deg, darkgray, darkgray);
+            border: none;
+            padding: 12px 0;
+            border-radius: 10px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: #ffffff;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .btn-glow:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 87, 255, 0.3);
+        }
+
+        .btn-glow::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg,
+            transparent,
+            rgba(255, 255, 255, 0.3),
+            transparent);
+            transform: rotate(45deg);
+            animation: btnGlow 3s linear infinite;
+        }
+
+        .signup-link {
+            color: grey;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .signup-link:hover {
+            color: dimgray;
+            text-decoration: underline;
+        }
+
+        @keyframes glow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes btnGlow {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+    </style>
+</head>
+<body>
+<div class="signin-container">
+    <h2>WELCOME BACK <img src="https://i.pinimg.com/originals/53/04/96/530496f5dcf65046e8c0360d7d89b10a.gif" alt="gif"></h2>
+    <form action="/auth/saveSignIn" method="post">
+        <div class="mb-3 position-relative">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" id="email" name="email" class="form-control" required>
+            <i class="fas fa-envelope input-icon"></i>
+        </div>
+
+        <div class="mb-3 position-relative">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" id="password" name="password" class="form-control" required>
+            <i class="fas fa-lock input-icon"></i>
+        </div>
+
+        <button type="submit" class="btn btn-glow w-100">SIGN IN</button>
+    </form>
+    <div th:if="${error}" class="alert alert-danger mt-3" th:text="${error}"></div>
+    <p class="text-center mt-4 mb-0">Don't have an account? <a href="/auth/register" class="signup-link">Sign Up</a></p>
+</div>
+</body>
+</html>

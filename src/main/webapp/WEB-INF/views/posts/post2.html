@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Border Glow Post</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --reddit-orange: #FF4500;
+            --ps-glow: rgba(0, 247, 255, 0.4);
+            --bg-color: #dae0e6;
+            --card-bg: #ffffff;
+        }
+        body {
+            font-family: 'Arial', 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f6f8;
+            color: #1a1a1b;
+            display: flex;
+        }
+        .side-nav {
+            width: 400px;
+            flex-shrink: 0;
+            height: 100vh;
+            overflow-y: auto;
+            position: sticky;
+            top: 0;
+            background: var(--card-bg);
+            padding: 20px 0;
+            border-right: 1px solid #edeff1;
+            box-shadow: 2px 0 8px rgba(0,0,0,0.05);
+            border-radius: 20px; /* Makes navigation panel rounded */
+            margin: 10px; /* Adds spacing around the panel */
+        }
+        .nav-header {
+            display: flex;
+            align-items: center;
+            justify-content: center; /* Центрирование содержимого */
+            gap: 10px; /* Отступ между GIF и текстом */
+            margin-bottom: 20px;
+        }
+        .nav-title {
+            font-family: 'Arial', sans-serif;
+            font-size: 30px;
+            margin: 0;
+            white-space: nowrap; /* Запрет переноса текста */
+        }
+        .nav-logo {
+            max-width: 60px;
+            max-height: 60px;
+            border-radius: 50%;
+        }
+        .nav-title {
+            font-size: 30px;
+            margin: 0;
+            white-space: nowrap; /* Запрет переноса текста */
+        }
+
+
+        .nav-item {
+            padding: 16px 24px;
+            margin: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--card-bg);
+            color: #495057;
+        }
+
+
+        .nav-item:hover {
+            background: #fff5f2;
+            transform: translateX(8px);
+            box-shadow: 0 0 12px var(--ps-glow);
+        }
+        .post-card {
+            position: relative;
+            background: #ffffff;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .post-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border-radius: 10px;
+            background: linear-gradient(
+                    45deg,
+                    #0057b7 0%,    /* PlayStation blue */
+                    #5e2d8d 50%,   /* PlayStation purple */
+                    #0057b7 100%
+            );
+            z-index: -1;
+            animation: border-glow 3s linear infinite;
+            opacity: 0.7;
+        }
+
+        @keyframes border-glow {
+            0% {
+                filter: blur(8px) brightness(1);
+                opacity: 0.7;
+            }
+            50% {
+                filter: blur(12px) brightness(1.2);
+                opacity: 1;
+            }
+            100% {
+                filter: blur(8px) brightness(1);
+                opacity: 0.7;
+            }
+        }
+
+        .post-card:hover::before {
+            animation: border-glow 1.5s linear infinite;
+        }
+
+        .post-card-content {
+            position: relative;
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .comment {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .delete-btn {
+            background-color: red;
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        .delete-btn:hover {
+            background-color: darkred;
+        }
+
+        .comment-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+
+        .comment-btn {
+            margin-top: 10px;
+            background-color: blue;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .comment-btn:hover {
+            background-color: darkblue;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+<nav class="side-nav">
+    <div class="nav-header">
+        <h2 class="nav-title">YoHi</h2>
+        <img src="https://i.pinimg.com/originals/53/04/96/530496f5dcf65046e8c0360d7d89b10a.gif" alt="Logo" class="nav-logo">
+    </div>
+    <div class="nav-item px-4 py-3" style="margin: 8px 12px; cursor: default;">
+        <form th:action="@{/users/find/{id}(id=${user.id})}" method="get" class="relative">
+            <input type="text"
+                   name="query"
+                   placeholder="Search users..."
+                   class="w-full px-4 py-2 rounded-full border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent"
+                   style="font-family: 'Comic Sans MS', cursive; padding-right: 40px;">
+            <button type="submit" class="absolute right-3 top-1/2 -translate-y-1/2">
+                <i class="fa-solid fa-magnifying-glass text-gray-400 hover:text-blue-500 transition-colors"></i>
+            </button>
+        </form>
+    </div>
+
+    <a th:href="@{/auth/getProfile/{id}(id=${owner.id})}" class="nav-item">
+        <i class="fa-solid fa-house" style="color: #99a4b8;"></i> Home
+    </a>
+    <a th:href="@{/followers/getAll/{id}(id=${owner.id})}" class="nav-item">
+        <i class="fa-solid fa-circle-user" style="color: #99a4b8;"></i> Make Friend
+    </a>
+    <a th:href="@{/posts/getAll/{id}(id=${owner.id})}" class="nav-item">
+        <i class="fa-solid fa-image" style="color: #99a4b8;"></i> Posts
+    </a>
+    <a th:href="@{/posts/create-post-form/{id}(id=${owner.id})}" class="nav-item">
+        <i class="fa-solid fa-plus" style="color: #99a4b8;"></i> Create Post
+    </a>
+    <a th:href="@{/set/setting/{id}(id=${owner.id})}" class="nav-item">
+        <i class="fa-solid fa-gear" style="color: #99a4b8;"></i> Settings
+    </a>
+</nav>
+
+<div class="container mx-auto px-4 py-8 max-w-2xl">
+    <!-- Post Card -->
+    <div class="post-card">
+        <div class="post-card-content">
+            <!-- Author Section -->
+            <div class="flex items-center mb-3">
+                <div class="w-10 h-10 rounded-full bg-blue-500 mr-3 flex-shrink-0">
+                    <img th:src="${owner.userInfo.image}" class="w-full h-full rounded-full" alt="profile">
+                </div>
+                <div class="flex-grow">
+                    <div class="flex items-center gap-2">
+                        <span class="font-medium text-sm" th:text="${owner.username}">InternetCity</span>
+                        <span class="text-xs px-2 py-1 bg-blue-100 text-blue-600 rounded-full">OP</span>
+                        <span class="text-xs text-gray-500 ml-auto" th:text="${post.createdAt}">4 hours ago</span>
+                    </div>
+                    <span class="text-xs text-gray-500" th:text="${post.title}">r/InternetCity</span>
+                </div>
+            </div>
+
+            <!-- Post Content -->
+            <h2 class="text-xl font-bold mb-2" th:text="${post.title}">Best Anime Edit EVER?</h2>
+            <p class="text-gray-800 mb-4" th:text="${post.description}">Welcome to the What It Do Crew! This is the Official subreddit for Mikey and Aaron from InternetCity.</p>
+
+            <!-- Post Image -->
+            <div class="mb-4 bg-gray-200 h-64 rounded-lg overflow-hidden">
+                <img th:src="${post.user.getUserInfo().image}" class="w-full h-full object-cover" alt="post content">
+            </div>
+
+            <!-- Interaction Bar -->
+            <div class="flex items-center gap-4 text-sm border-t pt-3">
+                <!-- Comment Button -->
+                <a th:href="@{/likes/like/{id}/{postId}(id=${owner.id},postId=${post.uniqueID})}"
+                   class="flex items-center bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-lg transition-all">
+                    <span class="mr-2"><i class="fa-solid fa-star" style="color: #FFD43B;"></i></span>
+                    <span th:text="${post.likes?.size() ?: 0}">30</span>
+                </a>
+
+                <!-- Like Button -->
+                <button class="flex items-center bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-lg transition-all">
+                    <span class="mr-2"><i class="fa-solid fa-comment" style="color:deepskyblue;"></i></span>
+                    <span th:text="${post.comments?.size() ?: 0}">30</span>
+                </button>
+
+                <!-- Share Button -->
+
+            </div>
+            <div id="commentsContainer" class="mt-3 text-gray-700"></div>
+
+            <!-- Comment Section -->
+            <div class="mt-6">
+                <h3 class="font-semibold text-lg mb-2">Comments</h3>
+                <div id="comment-list">
+                    <!-- Comment List -->
+                    <div th:each="comment : ${post.getComments()}" class="comment" data-user="${comment.user.id}">
+                        <div class="flex items-center w-full">
+                            <!-- User Profile Image Button -->
+                            <a th:href="@{/user/{id}(id=${comment.user.id})}" class="flex items-center mr-3">
+                                <img th:src="${comment.user.userInfo.image}"
+                                     class="w-8 h-8 rounded-full object-cover"
+                                     alt="comment author">
+                            </a>
+                            <div class="flex-grow">
+                                <div class="flex items-center gap-2">
+                                    <a th:href="@{/user/{id}(id=${comment.user.id})}"
+                                       class="font-medium text-sm hover:text-blue-500"
+                                       th:text="${comment.user.username}">
+                                    </a>
+                                    <span class="text-xs text-gray-500"
+                                          th:text="${comment.createdAt}">
+                                    </span>
+                                </div>
+                                <p th:text="${comment.comment}" class="text-gray-800"></p>
+                            </div>
+                            <!-- Delete Button -->
+                            <form th:if="${comment.user.id == owner.id}"
+                                  th:action="@{/comments/delete/{postId}/{commentId}/{userId}(postId=${post.uniqueID}, commentId=${comment.uniqueID}, userId=${owner.id})}"
+                                  method="post">
+                                <button type="submit" class="delete-btn">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <form th:action="@{/comments/add/{postId}/{userId}(postId=${post.uniqueID}, userId=${owner.id})}" method="post">
+                    <textarea name="text" class="comment-input" placeholder="Write a comment..." required></textarea>
+                    <button type="submit" class="comment-btn">Comment</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Existing JavaScript modified for server-side handling
+    function deleteComment(event) {
+        if (!confirm('Are you sure you want to delete this comment?')) {
+            return;
+        }
+        const form = event.target.closest('form');
+        if (form) {
+            form.submit();
+        }
+    }
+
+    // Add click handlers for user profile links
+    document.querySelectorAll('.user-profile').forEach(link => {
+        link.addEventListener('click', (e) => {
+            // Handle profile navigation
+            window.location.href = e.currentTarget.href;
+        });
+    });
+
+
+
+</script>
+</body>
+</html>

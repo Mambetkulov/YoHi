@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Twitter-style Followers List</title>
+    <style>
+        :root {
+            --reddit-orange: #FF4500;
+            --ps-glow: rgba(0, 247, 255, 0.4);
+            --bg-color: #dae0e6;
+            --card-bg: #ffffff;
+        }
+        body {
+            font-family: 'Comic Sans MS', 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f6f8;
+            color: #1a1a1b;
+            display: flex;
+        }
+        .side-nav {
+            width: 400px;
+            flex-shrink: 0;
+            height: 100vh;
+            overflow-y: auto;
+            position: sticky;
+            top: 0;
+            background: var(--card-bg);
+            padding: 20px 0;
+            border-right: 1px solid #edeff1;
+            box-shadow: 2px 0 8px rgba(0,0,0,0.05);
+            border-radius: 20px; /* Makes navigation panel rounded */
+            margin: 10px;
+            /* Adds spacing around the panel */
+        }
+        .nav-header {
+            display: flex;
+            align-items: center;
+            justify-content: center; /* Центрирование содержимого */
+            gap: 10px; /* Отступ между GIF и текстом */
+            margin-bottom: 20px;
+        }
+        .nav-title {
+            font-family: 'Arial', sans-serif;
+            font-size: 30px;
+            margin: 0;
+            white-space: nowrap; /* Запрет переноса текста */
+        }
+        .nav-logo {
+            max-width: 60px;
+            max-height: 60px;
+            border-radius: 50%;
+        }
+        .nav-title {
+            font-size: 30px;
+            margin: 0;
+            white-space: nowrap; /* Запрет переноса текста */
+        }
+
+
+        .nav-item {
+            padding: 16px 24px;
+            margin: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--card-bg);
+            color: darkgray;
+        }
+
+
+        .nav-item:hover {
+            background: #fff5f2;
+            transform: translateX(8px);
+            box-shadow: 0 0 12px var(--ps-glow);
+        }
+
+        .followers-container {
+            width: 800px;
+            height: 800px;
+            margin-right: 50px;
+            background-color: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
+        }
+
+        .follower-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid white;
+            transition: background-color 0.2s;
+        }
+
+        .follower-item:hover {
+            background-color: grey;
+        }
+
+        .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+            object-fit: cover;
+        }
+
+        .user-info {
+            flex-grow: 1;
+        }
+
+        .user-name {
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+
+        .user-handle {
+            color: #8899A6;
+            font-size: 0.9em;
+        }
+
+        .unfollow-btn {
+            background-color: transparent;
+            border: 1px solid grey;
+            color: grey;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .unfollow-btn:hover {
+            background-color: #421717;
+            border-color: #F4212E;
+            color: #F4212E;
+        }
+
+        .followers-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid #38444D;
+        }
+
+        .followers-header h2 {
+            font-size: 1.3em;
+        }
+    </style>
+</head>
+<body>
+<nav class="side-nav">
+    <div class="nav-header">
+        <h2 class="nav-title">YoHi</h2>
+        <img src="https://i.pinimg.com/originals/53/04/96/530496f5dcf65046e8c0360d7d89b10a.gif" alt="Logo" class="nav-logo">
+    </div>
+    <div class="nav-item px-4 py-3" style="margin: 8px 12px; cursor: default;">
+        <form th:action="@{/users/find/{id}(id=${user.id})}" method="get" class="relative">
+            <input type="text"
+                   name="query"
+                   placeholder="Search users..."
+                   class="w-full px-4 py-2 rounded-full border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent"
+                   style="font-family: 'Comic Sans MS', cursive; padding-right: 40px;">
+            <button type="submit" class="absolute right-3 top-1/2 -translate-y-1/2">
+                <i class="fa-solid fa-magnifying-glass text-gray-400 hover:text-blue-500 transition-colors"></i>
+            </button>
+        </form>
+    </div>
+
+    <a th:href="@{/auth/getProfile/{id}(id=${user.id})}" class="nav-item">
+        <i class="fa-solid fa-house" style="color: #99a4b8;"></i> Home
+    </a>
+    <a th:href="@{/followers/getAll/{id}(id=${user.id})}" class="nav-item">
+        <i class="fa-solid fa-circle-user" style="color: #99a4b8;"></i> Make Friend
+    </a>
+    <a th:href="@{/posts/getAll/{id}(id=${user.id})}" class="nav-item">
+        <i class="fa-solid fa-image" style="color: #99a4b8;"></i> Posts
+    </a>
+    <a th:href="@{/posts/create-post-form/{id}(id=${user.id})}" class="nav-item">
+        <i class="fa-solid fa-plus" style="color: #99a4b8;"></i> Create Post
+    </a>
+    <a th:href="@{/set/setting/{id}(id=${user.id})}" class="nav-item">
+        <i class="fa-solid fa-gear" style="color: #99a4b8;"></i> Settings
+    </a>
+</nav>
+<div class="followers-container">
+    <div class="followers-header">
+        <h2>Followers · <span th:text="${user.follower.getSubscribers().size() == 0 ? 0 : user.follower.getSubscribers().size()}">0</span></h2>
+    </div>
+
+    <div th:each="follower : ${follow}" class="follower-item">
+        <img th:src="${follower.getUserInfo().image}" alt="Profile" class="avatar">
+        <div class="user-info">
+            <div class="user-name" th:text="${follower.getUserInfo().fullName}">User Name</div>
+            <div class="user-handle" th:text="${follower.username}">@username</div>
+        </div>
+        <button class="unfollow-btn">Following</button>
+    </div>
+</div>
+
+</body>
+</html>

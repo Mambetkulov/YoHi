@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Details</title>
+    <style>
+        :root {
+            --ps-blue: #0055ff;
+            --ps-cyan: #00f2ff;
+            --reddit-dark: #1A1A1B;
+            --reddit-border: #EDEFF1;
+            --reddit-text: #222222;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #F6F7F8;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .user-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 420px;
+            overflow: hidden;
+            transition: transform 0.2s ease;
+            margin: 20px;
+            position: relative;
+        }
+
+        .user-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg,
+            var(--ps-cyan),
+            var(--ps-blue),
+            var(--ps-cyan));
+            z-index: -1;
+            border-radius: 18px;
+            animation: glow 3s linear infinite;
+            filter: blur(10px);
+            opacity: 0.6;
+        }
+
+        .user-header {
+            padding: 32px;
+            background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 100%);
+            text-align: center;
+            position: relative;
+        }
+
+        .avatar-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .user-avatar {
+            width: 112px;
+            height: 112px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid white;
+            box-shadow: 0 0 30px rgba(0, 242, 255, 0.3);
+            position: relative;
+            z-index: 1;
+            transition: transform 0.3s ease;
+        }
+
+        .avatar-container::after {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: -6px;
+            right: -6px;
+            bottom: -6px;
+            background: linear-gradient(45deg,
+            var(--ps-cyan),
+            var(--ps-blue),
+            var(--ps-cyan));
+            border-radius: 50%;
+            animation: glow 3s linear infinite;
+            filter: blur(15px);
+            opacity: 0.4;
+            z-index: 0;
+        }
+
+        .user-avatar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 40px rgba(0, 242, 255, 0.5);
+        }
+
+        @keyframes glow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .user-details {
+            padding: 24px;
+        }
+
+        .detail-item {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .detail-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .detail-label {
+            color: #7c7c7c;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .detail-label i {
+            font-size: 14px;
+            color: var(--reddit-orange);
+        }
+
+        .detail-value {
+            color: var(--reddit-dark);
+            font-size: 15px;
+            line-height: 1.4;
+            padding-left: 24px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            padding: 0 24px 24px;
+        }
+
+        .reddit-button {
+            background: var(--reddit-orange);
+            color: white;
+            border: none;
+            border-radius: 24px;
+            padding: 12px 20px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            flex: 1;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .reddit-button:hover {
+            background: #FF5714;
+            box-shadow: 0 4px 12px rgba(255,69,0,0.2);
+        }
+
+        .reddit-button i {
+            font-size: 16px;
+        }
+
+        .reddit-button.secondary {
+            background: none;
+            color: var(--reddit-orange);
+            border: 2px solid var(--reddit-orange);
+        }
+
+        .reddit-button.secondary:hover {
+            background: #FFF5F2;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+<div class="user-card">
+    <div class="user-header">
+        <div class="avatar-container">
+            <img th:src="${user.userInfo.image}" alt="Profile image" class="user-avatar">
+        </div>
+    </div>
+    <div class="user-details">
+        <div class="detail-item">
+            <div class="detail-label">
+                <i class="fas fa-user"></i>
+                FULL NAME
+            </div>
+            <div class="detail-value" th:text="${user.userInfo.fullName}"></div>
+        </div>
+
+        <div class="detail-item">
+            <div class="detail-label">
+                <i class="fas fa-venus-mars"></i>
+                GENDER
+            </div>
+            <div class="detail-value" th:text="${user.userInfo.gender}"></div>
+        </div>
+
+        <div class="detail-item">
+            <div class="detail-label">
+                <i class="fas fa-book-open"></i>
+                BIOGRAPHY
+            </div>
+            <div class="detail-value" th:text="${user.userInfo.biography}"></div>
+        </div>
+    </div>
+
+    <div class="button-group">
+        <a th:href="@{/usersInfo/update-form/{userId}(userId=${user.userInfo.id})}"
+           class="reddit-button">
+            <i class="fas fa-edit"></i>
+            Edit Profile
+        </a>
+        <a th:href="@{/usersInfo/change-image-form/{userId}(userId=${user.userInfo.id})}"
+           class="reddit-button secondary">
+            <i class="fas fa-camera"></i>
+            Image
+        </a>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Create Post</title>
+    <style>
+        :root {
+            --reddit-orange: #FF4500;
+            --ps-glow: rgba(0, 247, 255, 0.4);
+            --bg-color: #dae0e6;
+            --card-bg: #ffffff;
+        }
+        body {
+            font-family: 'Comic Sans MS', 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f6f8;
+            color: #1a1a1b;
+            display: flex;
+        }
+        .side-nav {
+            width: 400px;
+            flex-shrink: 0;
+            height: 100vh;
+            overflow-y: auto;
+            position: sticky;
+            top: 0;
+            background: var(--card-bg);
+            padding: 20px 0;
+            border-right: 1px solid #edeff1;
+            box-shadow: 2px 0 8px rgba(0,0,0,0.05);
+            border-radius: 20px; /* Makes navigation panel rounded */
+            margin: 10px;
+            /* Adds spacing around the panel */
+        }
+        .nav-header {
+            display: flex;
+            align-items: center;
+            justify-content: center; /* Центрирование содержимого */
+            gap: 10px; /* Отступ между GIF и текстом */
+            margin-bottom: 20px;
+        }
+        .nav-title {
+            font-family: 'Arial', sans-serif;
+            font-size: 30px;
+            margin: 0;
+            white-space: nowrap; /* Запрет переноса текста */
+        }
+        .nav-logo {
+            max-width: 60px;
+            max-height: 60px;
+            border-radius: 50%;
+        }
+        .nav-title {
+            font-size: 30px;
+            margin: 0;
+            white-space: nowrap; /* Запрет переноса текста */
+        }
+
+
+        .nav-item {
+            padding: 16px 24px;
+            margin: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--card-bg);
+            color: #495057;
+        }
+
+
+        .nav-item:hover {
+            background: #fff5f2;
+            transform: translateX(8px);
+            box-shadow: 0 0 12px var(--ps-glow);
+        }
+
+
+        .container {
+            background: white;
+            box-shadow: 0 10px 70px rgba(0, 87, 255, 0.3);
+            border-radius: 20px;
+            border: 1px solid #ccc;
+            width: 100%;
+            max-width: 740px;
+            padding: 16px;
+            margin-top: 0px;
+        }
+
+        .header {
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 12px;
+            margin-bottom: 16px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 500;
+            color: #1c1c1c;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .community-input {
+            background: #f6f7f8;
+            border: 1px solid #edeff1;
+            border-radius: 4px;
+            padding: 12px;
+            width: 100%;
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        .post-title {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #edeff1;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 16px;
+        }
+
+        .post-content {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #edeff1;
+            border-radius: 4px;
+            min-height: 120px;
+            font-size: 14px;
+            resize: vertical;
+        }
+
+        .post-button {
+            background: #0079d3;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 24px;
+            font-weight: bold;
+            cursor: pointer;
+            float: right;
+        }
+
+        .post-button:hover {
+            background: #1484d7;
+        }
+
+        .back-link {
+            color: #0079d3;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .disclaimer {
+            font-size: 12px;
+            color: #7c7c7c;
+            margin-top: 20px;
+            border-top: 1px solid #ccc;
+            padding-top: 16px;
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            font-weight: bold;
+            color: #1c1c1c;
+            margin-bottom: 8px;
+        }
+
+        .image-preview-container {
+            display: none;
+            margin: 16px 0;
+            border: 1px solid #edeff1;
+            border-radius: 4px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .image-preview {
+            max-width: 100%;
+            max-height: 500px;
+            border-radius: 4px;
+            margin-top: 8px;
+        }
+
+        .remove-image {
+            background: #ff4500;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 12px;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+
+        .remove-image:hover {
+            background: #ff5714;
+        }
+
+        .url-input-container {
+            position: relative;
+        }
+
+        .preview-loading {
+            color: #878a8c;
+            font-size: 14px;
+            padding: 16px;
+        }
+
+        .error-message {
+            color: #ff4500;
+            font-size: 12px;
+            margin-top: 4px;
+            display: none;
+        }
+        @keyframes glow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes btnGlow {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+    </style>
+</head>
+<body>
+<nav class="side-nav">
+    <div class="nav-header">
+        <h2 class="nav-title">YoHi</h2>
+        <img src="https://i.pinimg.com/originals/53/04/96/530496f5dcf65046e8c0360d7d89b10a.gif" alt="Logo" class="nav-logo">
+    </div>
+    <div class="nav-item px-4 py-3" style="margin: 8px 12px; cursor: default;">
+        <form th:action="@{/users/find/{id}(id=${users.id})}" method="get" class="relative">
+            <input type="text"
+                   name="query"
+                   placeholder="Search users..."
+                   class="w-full px-4 py-2 rounded-full border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent"
+                   style="font-family: 'Comic Sans MS', cursive; padding-right: 40px;">
+            <button type="submit" class="absolute right-3 top-1/2 -translate-y-1/2">
+                <i class="fa-solid fa-magnifying-glass text-gray-400 hover:text-blue-500 transition-colors"></i>
+            </button>
+        </form>
+    </div>
+
+    <a th:href="@{/posts/getAll/{id}(id=${users.id})}" class="nav-item">
+        <i class="fa-solid fa-house" style="color: #99a4b8;"></i> Home
+    </a>
+    <a th:href="@{/followers/getAll/{id}(id=${users.id})}" class="nav-item">
+        <i class="fa-solid fa-circle-user" style="color: #99a4b8;"></i> Make Friend
+    </a>
+    <a th:href="@{/posts/getAll/{id}(id=${users.id})}" class="nav-item">
+        <i class="fa-solid fa-image" style="color: #99a4b8;"></i> Posts
+    </a>
+    <a th:href="@{/posts/create-post-form/{id}(id=${users.id})}" class="nav-item">
+        <i class="fa-solid fa-plus" style="color: #99a4b8;"></i> Create Post
+    </a>
+    <a th:href="@{/set/setting/{id}(id=${users.id})}" class="nav-item">
+        <i class="fa-solid fa-gear" style="color: #99a4b8;"></i> Settings
+    </a>
+</nav>
+<div class="container">
+    <div class="header">
+        <h1>Create Post</h1>
+    </div>
+
+    <form th:action="@{/posts/save/{userId}(userId=${users.id})}" method="post">
+        <input type="hidden" name="userId" th:value="${users.id}">
+
+        <div class="form-group">
+            <input type="text" class="post-title" id="title" name="title"
+                   placeholder="Title" th:field="${post.title}" required>
+        </div>
+
+        <div class="form-group">
+            <textarea class="post-content" id="description" name="description"
+                      th:field="${post.description}" placeholder="Text (optional)"></textarea>
+        </div>
+
+        <div class="form-group url-input-container">
+            <input type="text" id="imageUrl" name="imageUrl"
+                   class="post-title" placeholder="Url (optional)"
+                   oninput="handleImagePreview(this.value)">
+            <div class="error-message" id="urlError"></div>
+        </div>
+
+        <div class="image-preview-container" id="imagePreviewContainer">
+            <div class="preview-loading" id="loadingText">Loading preview...</div>
+            <img src="" class="image-preview" id="imagePreview">
+            <button type="button" class="remove-image" onclick="removeImage()">Remove</button>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="post-button">Post</button>
+            <a class="back-link" th:href="@{/users/getProfile/{userId}(userId=${users.id})}">← Back to Profile</a>
+        </div>
+
+        <div class="disclaimer">
+            Please be mindful of community rules. Reddit-style content policy applies to all posts.
+        </div>
+    </form>
+</div>
+
+<script>
+    function handleImagePreview(url) {
+        const container = document.getElementById('imagePreviewContainer');
+        const preview = document.getElementById('imagePreview');
+        const error = document.getElementById('urlError');
+        const loading = document.getElementById('loadingText');
+
+        // Reset state
+        error.style.display = 'none';
+        loading.style.display = 'block';
+        preview.style.display = 'none';
+
+        if (!url) {
+            container.style.display = 'none';
+            return;
+        }
+
+        // Simple URL validation
+        if (!isValidImageUrl(url)) {
+            error.textContent = 'Please enter a valid image URL (jpg, jpeg, png, gif)';
+            error.style.display = 'block';
+            container.style.display = 'none';
+            return;
+        }
+
+        container.style.display = 'block';
+
+        // Load image preview
+        preview.onload = function() {
+            loading.style.display = 'none';
+            preview.style.display = 'block';
+        }
+
+        preview.onerror = function() {
+            loading.style.display = 'none';
+            error.textContent = 'Failed to load image preview';
+            error.style.display = 'block';
+            preview.style.display = 'none';
+        }
+
+        preview.src = url;
+    }
+
+    function isValidImageUrl(url) {
+        return /\.(jpeg|jpg|gif|png)$/.test(url);
+    }
+
+    function removeImage() {
+        const urlInput = document.getElementById('imageUrl');
+        urlInput.value = '';
+        handleImagePreview('');
+    }
+</script>
+
+</body>
+</html>

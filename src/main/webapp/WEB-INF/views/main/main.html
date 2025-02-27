@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reddit</title>
+    <meta http-equiv="refresh" content="6;url=auth/signIn">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: white;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            animation: fadeOut 2s ease-in 4s forwards;
+        }
+
+        .reddit-logo {
+            width: 100px;
+            height: 100px;
+            background-image: url("https://i.pinimg.com/originals/53/04/96/530496f5dcf65046e8c0360d7d89b10a.gif");
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            border-radius: 50%;
+        }
+
+        .logo-text {
+            margin-top: 30px;
+            font-size: 70px;
+            font-weight: bold;
+            color: grey;
+            font-family: Arial, sans-serif;
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+<div class="reddit-logo"></div>
+<div class="logo-text">YoHi</div>
+</body>
+</html>

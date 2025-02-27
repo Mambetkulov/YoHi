@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebContextManager">
+    <option name="state">
+      <map>
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/follower/all-users.html" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/follower" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/follower/follower-list.html" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/follower" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/follower/user-profile.html" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/follower" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/main/main.html" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/main" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/posts/post.html" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/posts" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/posts/setting.html" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/posts" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/user/home-page.html" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/user" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/user/profile.html" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/user" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/user/search.html" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/user" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/user/user-info.html" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/user" />
+      </map>
+    </option>
+  </component>
+</project>
