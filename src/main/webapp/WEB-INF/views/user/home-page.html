@@ -300,7 +300,7 @@
             margin: 6px 12px; /* Reduced from 8px 12px */
         }
         .ninja-scroll-container {
-            --ninja-red: #FF4444;
+            --ninja-red: grey;
             --scroll-paper: #ffffff;
             --gold-accent: #FFD700;
             background: var(--scroll-paper);
@@ -351,7 +351,7 @@
         }
 
         .value::before {
-            content: '▹';
+            content: ':';
             position: absolute;
             left: 0;
             color: var(--gold-accent);
@@ -435,7 +435,13 @@
 <div class="profile-container">
     <div class="banner" th:style="'background-image: url(' + ${user.image.imageURL} + ' );'"></div>
     <div class="profile-header">
-        <div class="profile-pic" th:style="'background-image: url(' + ${user.getUserInfo().image} + ');'"></div>
+        <a th:href="@{/usersInfo/change-image-form/{id}(id=${user.getId()})}"
+           class="profile-pic cursor-pointer
+          transition-all duration-300
+          hover:shadow-lg hover:ring-2 hover:ring-blue-500
+          active:ring-4 active:ring-blue-600"
+           th:style="'background-image: url(' + ${user.getUserInfo().image} + ');'">
+        </a>
         <div class="profile-info">
             <h2 th:text="${user.username}">User Name</h2>
             <p>
@@ -472,19 +478,19 @@
                 <div class="info-container">
                     <div class="info-row">
                         <span class="label">IDENTIFICATION</span>
-                        <span class="value" th:text="${user.id}">000-000</span>
+                        <span class="value" th:text="${user.id }">000-000</span>
                     </div>
                     <div class="info-row">
                         <span class="label">USERNAME</span>
-                        <span class="value" th:text="${user.username}">Anonymous</span>
+                        <span class="value" th:text="${user.username }">Anonymous</span>
                     </div>
                     <div class="info-row">
                         <span class="label">ROLE</span>
-                        <span class="value" th:text="${user.getUserInfo().gender ?: 'User'}">User</span>
+                        <span class="value" th:text="${user.getUserInfo().gender}">User</span>
                     </div>
                     <div class="info-row">
                         <span class="label">STATUS</span>
-                        <span class="value" th:text="${user.getUserInfo().fullName ?: 'Active'}">Active</span>
+                        <span class="value" th:text="${user.getUserInfo().fullName }">Active</span>
                     </div>
                     <div class="info-row">
                         <span class="label">BIOGRAPHY</span>

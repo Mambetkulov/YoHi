@@ -67,15 +67,15 @@
     <h2>Profile Image</h2>
 
     <!-- Profile Image Display -->
-    <img id="profileImage" th:src="${userInfo.image}" alt="Profile Image" class="profile-img">
+    <img id="profileImage" th:src="${user.getUserInfo().image}" alt="Profile Image" class="profile-img">
 
     <div class="url-input-container">
         <!-- Form to change the image URL -->
-        <form action="/usersInfo/changeImage" method="GET">
-            <label for="image">Enter Image URL:</label>
-            <input type="text" id="image" name="image" placeholder="Enter the URL for the image" th:value="${userInfo.image}">
+        <form action="/usersInfo/changeImage" method="get">
+            <label for="image">Profile Image URL</label>
+            <input type="text" id="image" class="input-field" name="image">
             <br><br>
-            <input type="hidden" name="id" th:value="${userInfo.id}"> <!-- Hidden field to pass user ID -->
+            <input type="hidden" name="id" th:value="${user.id}"> <!-- Hidden field to pass user ID -->
             <button type="submit" class="update-btn">Change Image</button>
         </form>
     </div>

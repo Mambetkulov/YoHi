@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import yohi1.models.User;
 import yohi1.repositery.FollowerRepo;
-import yohi1.repositery.impl.FollowerRepoImpl;
 import yohi1.service.FollowerService;
 
 import java.util.List;

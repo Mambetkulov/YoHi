@@ -196,9 +196,14 @@
             <a th:href="@{/posts/getPost/{id}/{own}(id=${post.uniqueID}, own=${id})}" class="block p-6">
             <!-- Author Header -->
                 <div class="flex items-center mb-3">
-                    <div class="w-10 h-10 rounded-full bg-blue-500 mr-3 flex-shrink-0">
-                        <img th:src="${post.user.userInfo.image}" class="w-full h-full rounded-full" alt="profile">
-                    </div>
+                    <a th:href="@{/posts/{id}(id=${post.uniqueID})}" class="profile-button">
+                        <div class="w-12 h-12 rounded-full bg-gray-100 border-2 border-white mr-3
+                             hover:border-blue-100 transition-colors">
+                            <img th:src="${post.user.getUserInfo().image}"
+                                 class="w-full h-full rounded-full object-cover"
+                                 alt="Profile image">
+                        </div>
+                    </a>
                     <div class="flex-grow">
                         <div class="flex items-center gap-2">
                             <span class="font-medium text-sm" th:text="${post.user.username}">InternetCity</span>

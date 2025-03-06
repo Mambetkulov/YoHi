@@ -143,10 +143,10 @@
 <body>
 <div class="signup-container">
     <h2>YoHi <img src="https://i.pinimg.com/originals/53/04/96/530496f5dcf65046e8c0360d7d89b10a.gif" alt="gif"></h2>
-    <form action="/auth/saveSignUp" method="post">
+    <form action="/auth/save" method="post">
         <div class="mb-3 position-relative">
-            <label for="name" class="form-label">Full Name</label>
-            <input type="text" id="name" name="name" class="form-control" required>
+            <label for="username" class="form-label">Full Name</label>
+            <input type="text" id="username" name="username" class="form-control" required>
             <i class="fas fa-user input-icon"></i>
         </div>
 
@@ -171,7 +171,7 @@
         <button type="submit" class="btn btn-glow w-100">SIGN UP</button>
     </form>
     <div th:if="${error}" class="alert alert-danger mt-3" th:text="${error}"></div>
-    <p class="text-center mt-4 mb-0">Already have an account? <a href="/auth/signin" class="login-link">Sign In</a></p>
+    <p class="text-center mt-4 mb-0">Already have an account? <a href="" class="login-link">Sign In</a></p>
 </div>
 </body>
 </html>

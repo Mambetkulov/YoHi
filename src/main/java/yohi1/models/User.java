@@ -52,10 +52,5 @@ public class User {
 
 
 
-    public User(String username, String password, String email, String phoneNumber) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-    }
+
 }

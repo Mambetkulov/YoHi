@@ -29,18 +29,23 @@ public class UserInfoRepoImpl implements UserInfoRepo {
     }
 
     @Override
-    public void change(UserInfo info,Long id) {
+    public void change(String url,Long id) {
        User user = entityManager.find(User.class, id);
        UserInfo userInfo = user.getUserInfo();
-       userInfo.setImage(info.getImage());
-        entityManager.merge(userInfo);
+       userInfo.setImage(url);
+       entityManager.merge(userInfo);
     }
 
     @Override
     public void deleteImage(Long id) {
         User user = entityManager.find(User.class, id);
         UserInfo userInfo = user.getUserInfo();
-        userInfo.setImage("https://i.pinimg.com/736x/f2/01/1b/f2011bfb4e87a2e5219bd4c2fb02a5e9.jpg");
+        userInfo.setImage("https://i.pinimg.com/736x/ce/65/5f/ce655f63e2068dd590aa19ec301a3c27.jpg");
         entityManager.merge(userInfo);
+    }
+
+    @Override
+    public void save(UserInfo userInfo) {
+        entityManager.persist(userInfo);
     }
 }

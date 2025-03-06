@@ -40,16 +40,16 @@ public class UserInfoController {
 
     @GetMapping("/change-image-form/{id}")
     String changeImageForm(@PathVariable("id") Long id, Model model){
-        UserInfo userInfo = userInfoService.findById(id);
-        model.addAttribute("userInfo", userInfo);
+        User user = userService.findById(id);
+        model.addAttribute("user", user);
         return "user/change-image" ;
     }
 
 
     @GetMapping("/changeImage")
-    String changeImage(@ModelAttribute("info")UserInfo info){
-        userInfoService.changeImage(info,idCopy);
-        return "redirect:/auth/getProfile/"+ idCopy;
+    String changeImage(@RequestParam("image") String url, @RequestParam("id") Long userId){
+        userInfoService.changeImage(url,userId);
+        return "redirect:/auth/getProfile/"+ userId;
     }
 
     @GetMapping("/deleteImage")
