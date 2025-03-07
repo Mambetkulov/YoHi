@@ -196,7 +196,7 @@
             <a th:href="@{/posts/getPost/{id}/{own}(id=${post.uniqueID}, own=${id})}" class="block p-6">
             <!-- Author Header -->
                 <div class="flex items-center mb-3">
-                    <a th:href="@{/posts/{id}(id=${post.uniqueID})}" class="profile-button">
+                    <a th:href="@{/auth/getProfile/{userId}(userId=${post.user.id})}" class="profile-button">
                         <div class="w-12 h-12 rounded-full bg-gray-100 border-2 border-white mr-3
                              hover:border-blue-100 transition-colors">
                             <img th:src="${post.user.getUserInfo().image}"
