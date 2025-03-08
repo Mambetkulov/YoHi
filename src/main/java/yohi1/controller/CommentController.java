@@ -25,6 +25,7 @@ public class CommentController {
     public String addComment(@PathVariable("postId") Long postId, @PathVariable("userId") Long userId, @RequestParam("text") String text) {
         User user = userService.findById(userId);
         commentService.addComment(postId, text, user);
+        System.out.println("hi there");
         return "redirect:/posts/getPost/" + postId + "/" + userId;
     }
 
