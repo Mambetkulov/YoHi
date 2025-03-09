@@ -35,7 +35,7 @@ public class UserController {
     @GetMapping("/find/{id}")
     public String find(@PathVariable("id")Long uId,@RequestParam("query") String textQ, Model model) {
         List<User> users = userService.findByUsername(textQ);
-        System.err.println(textQ);
+        System.err.println(textQ + "ha");
         model.addAttribute("users",users);
         model.addAttribute("userId",uId);
         return"/user/search";
