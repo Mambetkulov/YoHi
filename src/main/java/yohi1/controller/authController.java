@@ -57,6 +57,7 @@ public class authController {
     String getProfile(@PathVariable("userId") Long userId, Model model) {
         User user1 = userService.findById(userId);
         int[] numbers = followerService.followCount(userId);
+        System.out.println("hello");
         model.addAttribute("user",user1);
         model.addAttribute("array",numbers);
        return "/user/home-page";
